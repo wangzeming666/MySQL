@@ -15,3 +15,15 @@ ADD　增加
 DROP 删除
 ALTER TABLE customers ADD PRIMARY KEY（ID）；
 alter table customers drop primary key;
+
+
+修改表名
+ALTER TABLE  table_name RENAME　new_name；
+
+修改表头
+ALTER TABLE table_name CHANGE NAME new_name Type
+例 alter table students change name teachers varchar(20);
+
+删除表头
+ALTER TABLE students DROP COLUMN age;
+
