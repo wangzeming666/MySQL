@@ -1,0 +1,378 @@
+创建数据库
+CREATE DATABASE [db_name];
+create database testDB;
+
+查询数据库
+SHOW DATABASES;
+
+选择数据库
+USE [db_name];
+
+创建表格
+CREATE TABLE table_name (
+column1 datatype,
+column2 datatype,
+....
+columnN datatype
+); 
+
+CREATE TABLE customers (
+ID INT NOT NULL,
+NAME VARCHAR(20),
+AGE INT,
+ADDRESS CHAR(50),
+SALARY DECIMAL(18, 2)
+);
+
+查看数据库中的表格
+SHOW tables;
+
+查看表格属性
+show create table customers;
+
+删除数据库
+DROP DATABASE testDB;
+
+删除表格
+DROP TABLE customers;
+
+添加表中的记录
+INSERT INTO table_name (column1, column2, ... columnN)
+VALUES (value1, value2, ... valueN);
+
+INSERT INTO table_name VALUES (value1, value2, ... valueN);
+
+insert into customers (ID, NAME, AGE, ADDRESS, SALARY)
+values (1, 'Ramesh', 32, 'Ahmedabad', 2000.00);
+
+insert into customers values (2, 'Khilan', 25, 'Delhi', 1500.00);
+
+insert into customers values (3, 'Kaushik', 23, 'Kota', 2000.00);
+
+insert into customers values (4, 'Chaitali', 25, 'Mumbai', 6500.00);
+
+insert into customers values (5, 'Hardik', 27, 'Bhopal', 8500.00);
+
+insert into customers values (6, 'Komal', 22, 'MP', 4500.00);
+
+insert into customers values (7, 'Muffy', 24, 'Indore', 10000.00);
+
+SELECT语句
+SELECT column1, column2, ..., columnN FROM 
+table_name;
+select name, salary from customers;
+表明区分大小写
+列（属性）名不区分大小写
+
+SELECT * FROM table_name;
+select * from customers;
+
+WHERE语句
+SELECT column1, column2, ..., columnN
+FROM table_name
+WHERE [condition条件]
+
+select name, salary from customers
+where salary > 2000;
+
+查看当前操作的数据库
+SELECT DATABASE();
+
+查看当前用户
+SELECT USER();
+
+AND & OR逻辑运算符
+SELECT column1, column2, ..., columnN
+FROM table_name
+WHERE [condition条件1] AND [condition条件2] ... AND [condition条件N]
+
+select name, salary from customers
+where salary > 2000 and age < 25;
+
+SELECT column1, column2, ..., columnN
+FROM table_name
+WHERE [condition条件1] OR [condition条件2] ... OR [condition条件N]
+
+select name, salary, age from customers
+where salary > 2000 or age < 25;
+
+UPDATE （用来修改表中的记录）
+UPDATE table_name
+SET column1 = value1, column2 = value2, ..., columnN = valueN
+WHERE [condition条件]
+
+update customers
+set salary = 8000.91 
+where name = 'Komal';
+
+DELETE（删除表中的行）
+DELETE FROM table_name
+WHERE [condition条件]；
+
+
+delete from customers
+where ID = 6;
+
+注意：
+delete from customers; 将会删除表中所有记录
+Like关键词
+通配符%：0，1，或多个
+通配符_ ：单一数字或字符
+
+SELECT * FROM table_name
+WHERE column LIKE 'XXXX%'
+
+select * from customers
+where name like 'k%';
+
+select * from customers
+where name like 'k_____';
+注意：一个下划线_代表一个字符，五个下划线就是五个字符
+
+select * from customers
+where name like '%sh%';
+名字中出现sh的行
+
+
+select * from customers
+where salary like '6%';
+注意：like后跟的整数或者小数，都要用引号''括起来，参见工作salary like '6%'
+
+decimal(5,2)
+5: 一共有5个数字，包括整数部分和小数部分、
+2: 小数点后的位数
+例子: 111.11
+
+Limit关键词
+限制
+select * from table_name limit n;
+其中，n指返回表中前n条记录
+
+select * from customers limit 3;
+
+select * from table_name limit m,n;
+其中，m指记录开始的index(索引)。
+注意：0表示第一条记录。n是第m条开始，取n条
+
+select * from customers limit 2,4;
+
+Order By语句
+select column1, column2, ..., columnN
+from table_name
+[where condition条件]
+[order by column1, column2, ... columnN] [ASC | DESC]
+ASC: 升序
+DESC：降序
+| ： 或者，在sql中不需要输入此符号
+
+注意：order by语句之后的column(表的属性，列名)必须出现在select语句之后, 否则会引起语法错误。
+
+select * from customers
+order by name ASC;
+
+Group By语句
+group分组
+
+select column1, column2, ..., columnN
+from table_name
+where [condition]
+group by column1, column2
+order by column1, column2
+
+注意：
+1. group by语句必须在where语句之后，同时，在order by语句之前
+2. group by语句之后的column(表的属性，列名)必须出现在select语句之后
+
+select age, sum(salary) from customers
+where 年龄<30
+group by age
+order by 工资的总和 从低到高排序；
+
+distinct关键字
+与select语句一起使用
+作用：出去重复项，提取唯一的记录项目
+
+select distinct column1, column2, ..., columnN
+from table_name
+where [condition条件]；
+
+select distinct age from customers
+order by age;
+
+去除重复的工资，并且只列出工资不高于<=或 !>8000，所有记录按照工资从小到大排列
+select distinct salary from customers
+where salary <= 8000
+order by salary;
+
+
+概念设计-ER图 （哪些实体，实力里有哪些属性）
+逻辑设计-数据类型，主键，外键（1:1, 1:n, n:n）
+示例：
+primary key 主键
+not null 非空
+
+CREATE TABLE students (
+s_id int not null primary key,
+name varchar(20),
+gender varchar(20),
+age int,
+address varchar(50)
+);
+
+教师
+ID(PK) 姓名 性别 级别
+1         杨威  女   讲师
+2         老魏  男   讲师
+3         老冯  男   总监
+
+课程
+课程号(PK) 课程名    学费
+1                python   2万
+2                java        3万
+3                c++        1万
+
+教师
+ID(PK) 姓名 性别 级别 授课号（FP）
+1         杨威  女   讲师   4
+2         老魏  男   讲师   3
+3         老冯  男   总监   3
+
+
+create table registration (
+s_id int not null,
+c_id int not null,
+term varchar(20),
+grade decimal(4, 1),
+primary key(s_id, c_id),
+foreign key(s_id) references students(s_id),
+foreign key(c_id) references courses(c_id)
+);
+
+foreign key: 外键
+references：关联
+
+create table teachers (
+name varchar(20) not null primary key,
+gender varchar(20),
+rank varchar(20)
+);
+teacher:教师
+rank: 级别
+gender：性别
+
+create table textbooks (
+ISBN varchar(20) not null primary key,
+name varchar(20),
+auther varchar(20),
+publisher varchar(20)
+);
+ISBN: 出版物唯一识别的ID号，像身份证
+auther：作者
+publisher：出版社
+textbooks: 教材
+
+create table courses(
+c_id int not null primary key,
+name varchar(20),
+credit int,
+ISBN varchar(20),
+instructor varchar(20),
+foreign key(ISBN) references textbooks(ISBN),
+foreign key(instructor) references teachers(name)
+);
+
+注册表
+s_id   c_id    term学期   grade成绩
+1       python  201707   90
+1       java        201609   95
+2       java        201503   80
+...
+
+insert into students values(1, 'Ann', 'F', 21, 'Beijing');
+
+insert into teachers values('Yang', 'F', 'Instructor');
+insert into teachers values('Wei', 'M', 'Instructor');
+
+
+insert into textbooks values('00000', 'Intro to SQL', 'Yang', 'Renmin Press');
+
+insert into courses values(1, 'Databases', 3, '00000', 'Yang');
+
+insert into registration values(1, 1, '201708', 95);
+
+update registration set grade = 85 where s_id = 1 and c_id = 1;
+
+===========
+学生常见疑问1：
+多表查询以及外键的作用
+
+select 姓名 from 教师 where 授课号=2;
+
+课程
+课程号(PK) 课程名    学费  
+1                python   2万    
+2                java        3万   
+3                c++        1万    
+
+教师
+ID(PK) 姓名 性别 级别 授课号（FK）
+1         杨威  女   讲师   2
+2         老魏  男   讲师   1
+3         老冯  男   总监   3
+
+select 姓名，课程名 from 教师, 课程
+where  教师.授课号 = 课程.课程号;
+
+姓名 课程名
+杨威 java
+老魏 python
+老冯 c++
+
+select teachers.name, teachers.rank, courses.name 
+from teachers, courses 
+where courses.instructor = teachers.name;
+
+要查询的内容：
+teachers.name, teachers.rank, courses.name, courses.credit
+要求：teachers.rank = 'prefessor' OR 'instructor'
+
+select teachers.name, teachers.rank, courses.name, courses.credit from teachers, courses
+where courses.instructor = teachers.name and teachers.rank = 'prefessor';
+
+===========
+学生常见疑问2：
+FK外键拆入空置null
+insert into courses values (2, 'Advanced Python', 2, '00000', null);
+
+
+===========
+学生常见疑问3：
+
+级联修改或删除
+create table registration (
+s_id int not null,
+c_id int not null,
+term varchar(20),
+grade decimal(4, 1),
+primary key(s_id, c_id),
+foreign key(s_id) references students(s_id) on delete cascade on update cascade,
+foreign key(c_id) references courses(c_id) on delete cascade on update cascade
+);
+
+on delete cascade on update cascade 意思：如果外键对应数据被删除或者修改，将关联数据完全删除或者相应地修改。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
