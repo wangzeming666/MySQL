@@ -59,9 +59,234 @@ values
 (102, '2009-10-09 00:00:00', 1, 180),
 (103, '1009-11-10 00:00:00', 1, 988);
 
++----------+---------------------+--------------+--------+
+| order_id | date                | customers_id | amount |
++----------+---------------------+--------------+--------+
+|      102 | 2009-10-08 00:00:00 |            3 | 300.00 |
+|      100 | 2009-10-08 00:00:00 |            2 | 150.00 |
+|      101 | 2009-11-20 00:00:00 |            2 | 156.90 |
+|      102 | 2009-10-09 00:00:00 |            1 | 180.00 |
+|      103 | 1009-11-10 00:00:00 |            1 | 988.00 |
++----------+---------------------+--------------+--------+
+
+mysql> select * from customers;
++----+----------+------+-----------+----------+
+| ID | NAME     | AGE  | ADDRESS   | SALARY   |
++----+----------+------+-----------+----------+
+|  1 | Ramesh   |   32 | Ahmedabad |  2000.00 |
+|  2 | Khilan   |   25 | Delhi     |  1500.00 |
+|  3 | Kaushik  |   23 | Kota      |  2000.00 |
+|  4 | Chaitali |   25 | Mumbai    |  6500.00 |
+|  5 | Hardik   |   27 | Bhopal    |  8500.00 |
+|  6 | Komal    |   22 | MP        |  4500.00 |
+|  7 | Muffy    |   24 | Indore    | 10000.00 |
++----+----------+------+-----------+----------+
+
+
 
 自然连接
 select id, name, age, amount 
 from orders, customers 
 where customers.id = orders.c_id;
 最基本的join，叫自然连接，本质就是集合操作里的笛卡儿积。
+
+
+
+INNER JOIN：返回两个表中都对应上的行，也叫EQUIJOIN
+
+SELECT table1.column1, table.collumn2...,
+tableN.columnN
+FROM table1 
+INNER JOIN table2 
+ON table1.共同的属性  table2.共同的属性；
+
+select id, name, amount, date 
+from customers 
+inner join orders 
+on customers.id = orders.customers_id;
++----+---------+--------+---------------------+
+| id | name    | amount | date                |
++----+---------+--------+---------------------+
+|  1 | Ramesh  | 180.00 | 2009-10-09 00:00:00 |
+|  1 | Ramesh  | 988.00 | 1009-11-10 00:00:00 |
+|  2 | Khilan  | 150.00 | 2009-10-08 00:00:00 |
+|  2 | Khilan  | 156.90 | 2009-11-20 00:00:00 |
+|  3 | Kaushik | 300.00 | 2009-10-08 00:00:00 |
++----+---------+--------+---------------------+
+
+
+
+左连接
+left join：返回left join左边的表所有行，即使当中有写行没有对应上
+SELECT table1.column1, table.collumn2...,
+tableN.columnN
+FROM table1 
+LEFT JOIN table2 
+ON table1.共同的属性  table2.共同的属性；
+
+select id, name, amount, date 
+from customers 
+left join orders 
+on customers.id = orders.customers_id;
++----+----------+--------+---------------------+
+| id | name     | amount | date                |
++----+----------+--------+---------------------+
+|  3 | Kaushik  | 300.00 | 2009-10-08 00:00:00 |
+|  2 | Khilan   | 150.00 | 2009-10-08 00:00:00 |
+|  2 | Khilan   | 156.90 | 2009-11-20 00:00:00 |
+|  1 | Ramesh   | 180.00 | 2009-10-09 00:00:00 |
+|  1 | Ramesh   | 988.00 | 1009-11-10 00:00:00 |
+|  4 | Chaitali |   NULL | NULL                |
+|  5 | Hardik   |   NULL | NULL                |
+|  6 | Komal    |   NULL | NULL                |
+|  7 | Muffy    |   NULL | NULL                |
++----+----------+--------+---------------------+
+
+
+
+right join：返回右边表里所有的行，即使当中有些行没有匹配上
+SELECT table1.column1, table.collumn2...,
+tableN.columnN
+FROM table1 
+RIGHT JOIN table2 
+ON table1.共同的属性  table2.共同的属性；
+
+select id, name, amount, date 
+from customers 
+right join orders 
+on customers.id = orders.customers_id;
++------+---------+--------+---------------------+
+| id   | name    | amount | date                |
++------+---------+--------+---------------------+
+|    1 | Ramesh  | 180.00 | 2009-10-09 00:00:00 |
+|    1 | Ramesh  | 988.00 | 1009-11-10 00:00:00 |
+|    2 | Khilan  | 150.00 | 2009-10-08 00:00:00 |
+|    2 | Khilan  | 156.90 | 2009-11-20 00:00:00 |
+|    3 | Kaushik | 300.00 | 2009-10-08 00:00:00 |
++------+---------+--------+---------------------+
+
+self join 自连接：
+临时给自己起个名字再自己join自己
+SELECT a.column_name, b.column_name
+FROM table1 a, table1 b
+where a.共同的属性 = b.共同的属性；
+
+cartesian join（笛卡尔链接码， cross交叉join）：
+返回多个连接的表的记录的笛卡尔乘积
+SELECT table1.column1, table2.column2... 
+from table1, table2;
+
+select id, name, amount, date 
+from customes, orders;
++----+----------+--------+---------------------+
+| id | name     | amount | date                |
++----+----------+--------+---------------------+
+|  1 | Ramesh   | 300.00 | 2009-10-08 00:00:00 |
+|  1 | Ramesh   | 150.00 | 2009-10-08 00:00:00 |
+|  1 | Ramesh   | 156.90 | 2009-11-20 00:00:00 |
+|  1 | Ramesh   | 180.00 | 2009-10-09 00:00:00 |
+|  1 | Ramesh   | 988.00 | 1009-11-10 00:00:00 |
+|  2 | Khilan   | 300.00 | 2009-10-08 00:00:00 |
+|  2 | Khilan   | 150.00 | 2009-10-08 00:00:00 |
+|  2 | Khilan   | 156.90 | 2009-11-20 00:00:00 |
+|  2 | Khilan   | 180.00 | 2009-10-09 00:00:00 |
+|  2 | Khilan   | 988.00 | 1009-11-10 00:00:00 |
+|  3 | Kaushik  | 300.00 | 2009-10-08 00:00:00 |
+|  3 | Kaushik  | 150.00 | 2009-10-08 00:00:00 |
+|  3 | Kaushik  | 156.90 | 2009-11-20 00:00:00 |
+|  3 | Kaushik  | 180.00 | 2009-10-09 00:00:00 |
+|  3 | Kaushik  | 988.00 | 1009-11-10 00:00:00 |
+|  4 | Chaitali | 300.00 | 2009-10-08 00:00:00 |
+|  4 | Chaitali | 150.00 | 2009-10-08 00:00:00 |
+|  4 | Chaitali | 156.90 | 2009-11-20 00:00:00 |
+|  4 | Chaitali | 180.00 | 2009-10-09 00:00:00 |
+|  4 | Chaitali | 988.00 | 1009-11-10 00:00:00 |
+|  5 | Hardik   | 300.00 | 2009-10-08 00:00:00 |
+|  5 | Hardik   | 150.00 | 2009-10-08 00:00:00 |
+|  5 | Hardik   | 156.90 | 2009-11-20 00:00:00 |
+|  5 | Hardik   | 180.00 | 2009-10-09 00:00:00 |
+|  5 | Hardik   | 988.00 | 1009-11-10 00:00:00 |
+|  6 | Komal    | 300.00 | 2009-10-08 00:00:00 |
+|  6 | Komal    | 150.00 | 2009-10-08 00:00:00 |
+|  6 | Komal    | 156.90 | 2009-11-20 00:00:00 |
+|  6 | Komal    | 180.00 | 2009-10-09 00:00:00 |
+|  6 | Komal    | 988.00 | 1009-11-10 00:00:00 |
+|  7 | Muffy    | 300.00 | 2009-10-08 00:00:00 |
+|  7 | Muffy    | 150.00 | 2009-10-08 00:00:00 |
+|  7 | Muffy    | 156.90 | 2009-11-20 00:00:00 |
+|  7 | Muffy    | 180.00 | 2009-10-09 00:00:00 |
+|  7 | Muffy    | 988.00 | 1009-11-10 00:00:00 |
++----+----------+--------+---------------------+
+
+
+Union 并集
+注意事项：
+        1. 每个select句中必须选中相同数量的列
+        2. 列的数据类型要一致
+        3. 列的顺序要一致
+        4. 返回的是不重复的行
+        
+SELECT column1, column2..., columnN
+FROM table1
+[where condition]
+UNION
+SELECT column1, column2..., columnN
+FROM table2
+
+union all：返回重复的行
+
+NULL空值：
+注意：不同于零，也不同于空格，更不同于''
+SELECT name FROM customers WHERE salary IS NULL;
+注意：是IS NULL，而不是 = NULL
+
+Alias 别名
+给表或表中的某列或表头临时起个别名
+作用域：只影响当前执行的这条SQL
+SELECT column1, column2...,columnN
+FROM table_name AS new_name;
+[where condition];
+注意：where后跟原始名字，而不是别名
+
+
+修改表中某列的数据类型
+modify修改
+
+ALTER TABLE table_name MODIFY COLUMN column_name DATATYPE;
+
+alter table orders modify column amount float;
+
+
+对表添加主键限制
+ALTER TABLE table_name
+ADD PRIMARY KEY (column1, column2..., columnN)
+
+alter table orders add primary key(order_id, customers_id);
+
+
+对表删除主键限制
+ALTER TABLE table_name
+DROP PRIMARY KEY（column1, column2..., columnN)
+
+对表添加外键限制
+ALTER TABLE table_name1
+ADD FOREIGN KEY fk_constraint_name;
+注意：
+    1. foreign key 后面跟的是外键限制的名字，而不是作为外键的列的名字
+    2. 外间限制名用 show create table table_name 查询
+
+alter table orders
+add foreign key orders_ibfk_1;
+
+对表添加非空限制
+ALTER TABLE table_name MODIFY column_name DATATYPE
+NOT NULL
+alter table customers modify name varchar(20) not null;
+
+对表删除非空限制
+ALTER TABLE table_name MODIFY column_name DATATYPE
+default NULL
+alter table customers modify name varchar(20) default
+null;
+
+
