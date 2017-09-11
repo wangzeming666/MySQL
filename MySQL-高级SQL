@@ -27,3 +27,41 @@ ALTER TABLE table_name CHANGE NAME new_name Type
 删除表头
 ALTER TABLE students DROP COLUMN age;
 
+joins 多个表的连接
+利用两个或多个表中共同含有的列的相同值来连接
+
+
+order 订单
+date  日期
+amount数量
+
+create table orders(
+order_id int not null,
+date datetime,
+customers_id int,
+amount decimal(5,2)
+);
+
+insert into orders
+values(103,'2009-10-08 00:00:00', 3, 300);
+
+顾客（顾客ID，姓名，年龄，住址，工资）
+订单（订单ID，下订单时间，顾客ID，成交额）
+
+insert into orders
+values(100, '2009-10-08 00:00:00',2,150);
+
+insert into orders
+values(101, '2009-11-20 00:00:00', 2, 156.9);
+
+insert into orders 
+values 
+(102, '2009-10-09 00:00:00', 1, 180),
+(103, '1009-11-10 00:00:00', 1, 988);
+
+
+自然连接
+select id, name, age, amount 
+from orders, customers 
+where customers.id = orders.c_id;
+最基本的join，叫自然连接，本质就是集合操作里的笛卡儿积。
