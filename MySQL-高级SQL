@@ -13,8 +13,8 @@ update更改：只能用于更改表中的行（记录）或表中的列（属�
 
 ADD　增加
 DROP 删除
-ALTER TABLE customers ADD PRIMARY KEY（ID）；
-alter table customers drop primary key;
+ALTER TABLE customers ADD PRIMARY KEY(id);
+ALTER TABLE customers DROP PRIMARY KEY;
 
 
 修改表名
