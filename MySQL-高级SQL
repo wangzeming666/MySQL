@@ -1,0 +1,17 @@
+限制  constraint
+作用：限制存入表中的数据类型
+
+    1. NOT NULL 限制：某列不为空
+    2. default  限制：当列为空时，提供默认值
+    3. unique   限制：确保某列的所有值都不同，不重复
+    3. primary key ： 唯一辨别表中的记录
+    4. foreign key ： 唯一确定任何相关的其他表中的记录
+    5. index       ： 快速创建或者提取数据
+    
+ALTER 更改：宏观，数据库，表。注意：不能修改表中的行或列
+update更改：只能用于更改表中的行（记录）或表中的列（属性）
+
+ADD　增加
+DROP 删除
+ALTER TABLE customers ADD PRIMARY KEY（ID）；
+alter table customers drop primary key;
