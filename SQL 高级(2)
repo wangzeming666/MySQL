@@ -1,0 +1,54 @@
+truncate table: 保留表头，清空表列表
+truncate table table_name：保留某表格表头
+
+
+create table order_copy(order_id int,
+date datetime,
+customers_id int,
+amount decimal(5,2));
+
+insert into order_copy(order_id, date, customers_id, amount)
+select * from orders;
+
+truncate table order_copy: 保留order_copy表头，内容删除
+
+HAVING：指定条件，过滤 group by 分组的结果
+SELECT column1, column2..., columnN
+FROM table1, table2..., columnN
+WHERE[condition]
+GROUP BY column1, column2..., columnN
+HAVING[condition]
+ORDER BY column1, column2..., columnN [ACE/DESC]
+注意：1. where语句是对相对select中的列加条件限制，having语句是对group by语句里的组group加条件限制
+      2. select语句和where语句是一对儿，group by语句和having语句是一对
+      
+select gender, sum(grade) from students
+group by gender
+having sum(grade) > 950;
+
+select sum(salary) from customers group by salary;
+
+注意：
+    1. select语句后面紧跟的列名，必须也同时出现在group by语句里
+    2. group by语句常用于SQL函数
+    
+SQL函数
+    1. aggregate聚合函数：
+        avg():求平均值，计算从列中取得的值，返回一个单一的值
+        count():求总数
+        max():求最大值
+        min():求最小值
+        sum():求和
+        
+        ep：select customers_id, max(amount) from orders;
+    2. scalar标量函数:
+        LCASE(): 以小写字母展示
+        ucase(): 以大写字母展示
+        mid(): 从某个文本字段提取字符
+        select mid(column, start[, lenth]) from table_name
+        length(): 返回字段的长度、
+        select length（name) from customers;
+        
+        ep: select mid(name,1,3) from customers;
+        注意：索引1代表name中的第一个字符，不是0
+        
