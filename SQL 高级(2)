@@ -107,7 +107,7 @@ where id in
 and customers_id = id
 );
 
-insert into customers_co(
+insert into customers_c(
 select * from customers
 where id in 
 (select customers_id from orders where amount >
