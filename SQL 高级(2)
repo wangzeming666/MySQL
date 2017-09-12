@@ -48,6 +48,13 @@ SQL函数
         select mid(column, start[, lenth]) from table_name
         length(): 返回字段的长度、
         select length（name) from customers;
+        round(): 对某个数值字段进行制定小数位数的四舍五入
+        select round(amount, 0) from orders;
+        now(): 返回当前的系统日期和时间
+        select NOW() from orders;
+        format(): 格式化某个字段的显示方式
+        select format(column_name, format) from table_name;
+        select order_id, date_format(now(), '%Y-%M-%D') as date from orders;
         
         ep: select mid(name,1,3) from customers;
         注意：索引1代表name中的第一个字符，不是0
