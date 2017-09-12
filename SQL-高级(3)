@@ -1,0 +1,46 @@
+
+update语句的嵌套
+UPDATE table_name
+SET column_name = new_value
+[where conditioon]
+(SELECT column_name FROM table_name 
+[WHERE condition]);
+ep:
+update customers 
+set salary = salary * 2 
+where age in 
+(select age from customers where age > 30);
+ep:
+update customers 
+set salary = salary*2
+where id in[3,7];
+
+delete语句嵌套子查询
+DELETE FROM table_name 
+WHERE condition
+(SELECT column_name FROM table_name 
+WHERE condition);
+ep:
+delete from customers
+where name in 
+(select name from customers_c);
+
+执行事务
+事务机制可以确保数据一致性
+事务具有4个属性：
+    1. 原子性：一个事务是一个不可分割的工作单位，事务中的操作要么都做，要么都不做
+    2. 一致性：事务必须是使数据库从一个一致性状态变到另一个一致性状态
+    3. 隔离性：一个事务的执行不能被其它事务干扰
+    4. 持久性：指一个事务一旦被提交，它对数据库中的数据的改变就应该是永久性的。
+              接下来的其他操作或故障不应该对他有任何影响。
+    注意：
+        1. mysql 默认sql语句结果自动commit到数据库
+        2. 开始需要写start transaction，这样，自动commit就会被禁用。直到我们用commit或者rollback终止start transaction事务。
+        
+    ep:
+    start transaction
+    insert into orders values (109,'2007-09-12 00:00:00',1,900);
+    select * from orders;
+    rollback;
+    
+    
